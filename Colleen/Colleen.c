@@ -1,41 +1,19 @@
 #include <stdio.h>
-#include <string.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
 
-void function1(char *filename)
+void function1()
 {
-    int fd = open(filename, O_RDONLY);
-    if (fd < 0)
-    {
-        write(2, "open error", 11);
-        exit(1);
-    }
-    char buf[BUFSIZ + 1];
-    int x = 0;
-    while ((x = read(fd, buf, BUFSIZ)) > 0)
-    {
-        buf[x] = '\0';
-        if ((write(1, buf, x)) == -1)
-        {
-            write(2, "error", 6);
-            exit(1);
-        }
-    }
-    if (x == -1)
-    {
-        write(2, "read error", 11);
-        exit(1);
-    }
-    close(fd);
+    char *s = "#include <stdio.h>%c%cvoid function1()%c{%c    char *s = %c%s%c;%c    printf(s,10,10,10,10,34,s,34,10,10,10,10,10,10,10,10,10,10,10,10,10,10);%c}%c%c/*%c    comments outside main%c*/%c%cint main()%c{%c    /*%c        comments inside main%c    */%c    function1();%c}";
+    printf(s,10,10,10,10,34,s,34,10,10,10,10,10,10,10,10,10,10,10,10,10,10);
 }
 
-//comments outside main
+/*
+    comments outside main
+*/
 
 int main()
 {
-    //comments inside main
-    char *filename = "Colleen.c";
-    function1(filename);
+    /*
+        comments inside main
+    */
+    function1();
 }
