@@ -1,5 +1,4 @@
 SRC_DIR = Colleen Grace Sully
-# sully
 
 SRC_FILES = $(foreach dir, $(SRC_DIR), $(dir)/$(dir).c)
 
