@@ -1,8 +1,8 @@
 SRC_DIRS = Colleen Grace Sully
 
-SRC_FILES = $(foreach dir, $(SRC_DIRS), $(dir)/$(dir).asm)
+SRC_FILES = $(foreach dir, $(SRC_DIRS), $(dir)/$(dir).s)
 
-OBJ_FILES = $(SRC_FILES:.asm=.o)
+OBJ_FILES = $(SRC_FILES:.s=.o)
 
 OUT_FILES = $(foreach dir, $(SRC_DIRS), $(dir)/$(dir))
 
@@ -11,7 +11,7 @@ CFLAGS = -Wall -Wextra -Werror -no-pie
 
 all: $(OUT_FILES)
 
-%.o: %.asm
+%.o: %.s
 	nasm -f $(FORMAT) -o $@ $<
 
 $(OUT_FILES): %: %.o
