@@ -1,26 +1,28 @@
-SRC_DIR = Colleen #Grace Sully
+SRC_DIRS = Colleen Grace Sully
 
-SRC_FILES = $(foreach dir, $(SRC_DIR), $(dir)/$(dir).asm)
+SRC_FILES = $(foreach dir, $(SRC_DIRS), $(dir)/$(dir).asm)
 
-OUT_FILES = $(foreach dir, $(SRC_DIR), $(dir)/$(dir))
+OBJ_FILES = $(SRC_FILES:.asm=.o)
 
-OUT_FILES_O = $(foreach dir, $(SRC_DIR), $(dir)/$(dir).o)
+OUT_FILES = $(foreach dir, $(SRC_DIRS), $(dir)/$(dir))
 
 FORMAT = elf64
+CFLAGS = -Wall -Wextra -Werror -no-pie
 
 all: $(OUT_FILES)
 
-$(OUT_FILES): $(SRC_FILES)
-	nasm -f $(FORMAT) -o $@.o $<
-	ld  -o $@ $@.o
+%.o: %.asm
+	nasm -f $(FORMAT) -o $@ $<
 
+$(OUT_FILES): %: %.o
+	gcc $(CFLAGS) -o $@ $<
 
 clean:
-	rm -rf $(OUT_FILES) $(OUT_FILES_O)
+	rm -f $(OBJ_FILES)
 
-re: clean all
+fclean: clean
+	rm -f $(OUT_FILES)
 
-.PHONY: all clean
+re: fclean all
 
-# ; nasm -f elf64 -o hello-stack_64.o hello-stack_64.asm
-# ; ld  -o hello-stack_64 hello-stack_64.o
+.PHONY: all clean fclean re

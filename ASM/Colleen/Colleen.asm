@@ -1,20 +1,25 @@
 section .data
-msg db 'section .data',10,'msg db',10,'len equ $ - msg',10,10, 'section .text',10,'global main',10,10,59,' comment',10,'main:',10,'    ',59,' comment in main',10,'    mov rax, 1',10,'    mov rdi, 1',10,'    mov rsi, msg',10,'    mov rdx, len',10,'    syscall',10,10,'    ',59,' exit the program',10,'    mov rax, 60',10,'    xor rdi, rdi',10,'    syscall',0xa
-len equ $ - msg
+msg db "section .data%3$cmsg db %2$c%s%2$c,0%3$c%3$csection .text%3$cglobal main%3$cextern printf%3$c%3$c; comment%3$cmain:%3$c    ; comment in main%3$c    push rbp%3$c    mov rbp, rsp%3$c    lea rdi, [msg]%3$c    lea rsi, [msg]%3$c    mov rdx, 34%3$c    mov rcx, 10%3$c    call printf%3$c    call function%3$c%3$c    mov rsp, rbp%3$c    pop rbp%3$c    ret%3$c%3$cfunction:%3$c    ret",0
 
 section .text
 global main
+extern printf
 
 ; comment
 main:
     ; comment in main
-    mov rax, 1
-    mov rdi, 1          ; file descriptor 1 is stdout
-    lea rsi, msg        ; pointer to the message
-    mov rdx, len        ; length of the message
-    syscall
+    push rbp
+    mov rbp, rsp
+    lea rdi, [msg]
+    lea rsi, [msg]
+    mov rdx, 34
+    mov rcx, 10
+    call printf
+    call function
 
-    ; exit the program
-    mov rax, 60         ; syscall number for sys_exit
-    xor rdi, rdi        ; exit code 0
-    syscall
+    mov rsp, rbp
+    pop rbp
+    ret
+
+function:
+    ret
